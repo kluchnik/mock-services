@@ -41,18 +41,20 @@ honeyd exits on an interrupt or termination signal.
 
 > The options are as follows:  
 
-| −d | Do not daemonize, and enable verbose debugging messages. |
-| −P |On some operating systems, it is not possible to get event notifications for pcap via select(2). In that case, honeyd needs to run in polling mode. This flag enables polling. |
-|−l logfile|Log packets and connections to the logfile specified by logfile.|
-|−p fingerprints|Read nmap style fingerprints. The names defined after the token are stored as personalities. The personalities can be used in the configuration file to modify the behaviour of the simulated TCP stack.|
-|−x xprobe|Read xprobe style fingerprints. This file determines how honeyd reacts to ICMP fingerprinting tools.|
-|−a assoc|Read the file that associates nmap style fingerprints with xprobe style fingerprints.|
-|−f file|Read the configuration in file. It is possible to create host templates with the configuration file that specify which servers should run and which scripts should be started to simulate them. honeyd will reread the configuration file when sent a SIGHUP signal.|
-|−i interface|Listen on interface. It is possible to specify multiple interfaces.|
-|−V (--version)|Print version information and exit.|
-|−h (--help)|Print summary of command line options and exit.|
-|−-include-dir|For plugin development. Reports the directory in which honeyd stores its header files.|
-|net|The IP address or network (specified in CIDR notation) or IP address ranges to claim (e.g. '10.0.0.3', '10.0.0.0/16' or '10.0.0.5-10.0.0.15'). If unspecified, honeyd will attempt to claim any IP address it sees traffic for.|
+| Option  | Description |
+| ------------- | ------------- |
+| −d  | Do not daemonize, and enable verbose debugging messages.  |
+| −P |On some operating systems, it is not possible to get event notifications for pcap via select(2). In that case, honeyd needs to run in polling mode. This flag enables polling. |  
+| −l logfile | Log packets and connections to the logfile specified by logfile. |  
+| −p fingerprints | Read nmap style fingerprints. The names defined after the token are stored as personalities. The personalities can be used in the configuration file to modify the behaviour of the simulated TCP stack. |  
+| −x xprobe | Read xprobe style fingerprints. This file determines how honeyd reacts to ICMP fingerprinting tools. |  
+| −a assoc | Read the file that associates nmap style fingerprints with xprobe style fingerprints. |  
+| −f file | Read the configuration in file. It is possible to create host templates with the configuration file that specify which servers should run and which scripts should be started to simulate them. honeyd will reread the configuration file when sent a SIGHUP signal. |  
+| −i interface | Listen on interface. It is possible to specify multiple interfaces. |  
+| −V (--version) | Print version information and exit. |  
+| −h (--help) | Print summary of command line options and exit. |  
+| −-include-dir |For plugin development. Reports the directory in which honeyd stores its header files. |  
+| net | The IP address or network (specified in CIDR notation) or IP address ranges to claim (e.g. '10.0.0.3', '10.0.0.0/16' or '10.0.0.5-10.0.0.15'). If unspecified, honeyd will attempt to claim any IP address it sees traffic for. |  
 
 Минимальная конфигурация для запуска:  
 ```bash
@@ -60,7 +62,7 @@ honeyd -d -p nmap.prints -f <config-file> <NET-address>
 ```
 
 ## Конфигурирование
-```bash
+```
 config = creation | addition | binding | set | annotate | route [config] | option
 creation = "create" template-name | "create" "default" | "dynamic" template-name
 addition = "add" template-name proto "port" port-number action | "add" template-name "subsystem" cmd-string ["shared"] |
@@ -68,8 +70,9 @@ addition = "add" template-name proto "port" port-number action | "add" template-
 binding = "bind" ip-address template-name | "bind" condition ip-address template-name |
 	"bind" ip-address "to" interface-name | "clone" template-name template-name
 set = "set" template-name "default" proto "action" action | "set" template-name "personality" personality-name |
-	"set" template-name "personality" "random" | "set" template-name "uptime" seconds | "set" template-name "droprate" "in" percent |
-	"set" template-name "uid" number ["gid" number] | "set" ip-address "uptime" seconds
+	"set" template-name "personality" "random" | "set" template-name "uptime" seconds | 
+	"set" template-name "droprate" "in" percent | "set" template-name "uid" number ["gid" number] |
+	"set" ip-address "uptime" seconds
 annotate = "annotate" personality-name [no] finscan | "annotate" personality-name "fragment" ("drop" | "old" | "new")
 route = "route" "entry" ipaddr | "route" "entry" ipaddr "network" ipnetwork | "route" ipaddr "link" ipnetwork |
 	"route" ipaddr "unreach" ipnetwork | "route" ipaddr "add" "net" ipnetwork "tunnel" ipaddr(src) ipaddr(dst) |
@@ -84,23 +87,23 @@ option = "option" plugin option value
 #### ROUTING TOPOLOGY
 Создание полной топологии сети, включая и маршрутизацию.  
 Для имметация сети необходимо добавить маршрутизатор:  
-```bash
+```
 route entry <IP-address> network <NET-address>
 ```
 Подключение сети к маршрутизатору:  
-```bash
+```
 route <IP-address> link <NET-address>
 ```
 Добавление новой сети к маршрутизатору:  
-```bash
+```
 route <IP-address> add net <NET-address-new> <IP-address-new>
 ```
 Подключение к внешней сети выполняется командой:  
-```bash
+```
 bind <IP-address> to <interface-name>
 ```
 Example:  
-```bash
+```
 route entry 10.0.0.100 network 10.0.0.0/16
 route 10.0.0.100 link 10.0.1.0/24
 route 10.0.0.100 add net 10.1.0.0/16 10.0.1.100
@@ -109,24 +112,24 @@ bind 10.1.1.53 to eth0
 ```
 #### VIRTUAL HOSTS
 Добавить виртуальную машину:  
-```bash
+```
 create <VM-name>
 ```
 Добавить виртуальной машине соответсвующие отпечатки:  
-```bash
+```
 set <VM-name> personality "<NMAP-name>"
 ```
 Открыть порты в виртуальной машине:  
-```bash
+```
 add <VM-name> <protocol> port <port-number> <action>
 set <VM-name> default <protocol> action reset
 ```
 Скомутировать виртуальную машину:  
-```bash
+```
 bind <IP-address> <OS-name>
 ```
 Example-1:  
-```bash
+```
 create windows
 set windows personality "Windows NT 4.0 Server SP5-SP6"
 add windows tcp port 80 "perl scripts/iis-0.95/iisemul8.pl"
@@ -139,7 +142,7 @@ set windows default udp action reset
 bind 10.0.1.51 windows
 ```
 Example-2:  
-```bash
+```
 create OpenBSD
 set OpenBSD personality "OpenBSD 2.6-2.7"
 add OpenBSD tcp port 80 "sh scripts/web.sh"
