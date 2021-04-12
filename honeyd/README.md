@@ -29,16 +29,20 @@ dpkg -i honeyd_1.5c_amd64.deb
 honeyd − Honeypot Daemon  
 > SYNOPSIS  
 ```bash  
-honeyd [ −dP] [ −l logfile] [ −p fingerprints] [ −x xprobe] [ −a assoc] [ −f file] [ −i interface] [ −V|--version] [ −h|--help] [ −-include-dir] [ −i interface] [net ...]
+honeyd [ −dP] [ −l logfile] [ −p fingerprints] [ −x xprobe] [ −a assoc] [ −f file]
+	[ −i interface] [ −V|--version] [ −h|--help] [ −-include-dir] [ −i interface] [net ...]
 ```
 > DESCRIPTION  
+
 Honeyd creates virtual hosts for IP addresses matching the specified net. The daemon simulates the networking stack of the configured hosts and can simulate any TCP and UDP service. ICMP is fully supported, too. By default, all UDP ports are closed and honeyd will generate an ICMP unreachable port message if the configured personality permits that.  
 Honeyd enables a single host to claim unused addresses on a LAN for network simulation. The net argument may contain multiple addresses and network ranges.  
 In order for honeyd to receive network traffic for IP addresses that it should simulate, it is necessary to either explicitly route traffic to it, use proxy arp or run arpd(8) for unassigned IP addresses on a shared network.  
 honeyd exits on an interrupt or termination signal.  
+
 > The options are as follows:  
-|−d|Do not daemonize, and enable verbose debugging messages.|
-|−P|On some operating systems, it is not possible to get event notifications for pcap via select(2). In that case, honeyd needs to run in polling mode. This flag enables polling.|
+
+| −d | Do not daemonize, and enable verbose debugging messages. |
+| −P |On some operating systems, it is not possible to get event notifications for pcap via select(2). In that case, honeyd needs to run in polling mode. This flag enables polling. |
 |−l logfile|Log packets and connections to the logfile specified by logfile.|
 |−p fingerprints|Read nmap style fingerprints. The names defined after the token are stored as personalities. The personalities can be used in the configuration file to modify the behaviour of the simulated TCP stack.|
 |−x xprobe|Read xprobe style fingerprints. This file determines how honeyd reacts to ICMP fingerprinting tools.|
@@ -77,7 +81,7 @@ condition = "source os =" cmd-string | "source ip =" ipaddr | "source ip =" ipne
 timecondition = "between" time "-" time
 option = "option" plugin option value
 ```
-### ROUTING TOPOLOGY
+#### ROUTING TOPOLOGY
 Создание полной топологии сети, включая и маршрутизацию.  
 Для имметация сети необходимо добавить маршрутизатор:  
 ```bash
@@ -103,7 +107,7 @@ route 10.0.0.100 add net 10.1.0.0/16 10.0.1.100
 route 10.0.1.100 link 10.1.0.0/16
 bind 10.1.1.53 to eth0
 ```
-### VIRTUAL HOSTS
+#### VIRTUAL HOSTS
 Добавить виртуальную машину:  
 ```bash
 create <VM-name>
@@ -144,7 +148,7 @@ set OpenBSD default tcp action reset
 bind 10.0.1.52 OpenBSD
 ```
 
-### SCRIPTING WITH PYTHON  
+#### SCRIPTING WITH PYTHON  
 ```python
 import honeyd
 import sys
