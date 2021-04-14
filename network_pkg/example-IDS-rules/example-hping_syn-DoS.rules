@@ -1,0 +1,1 @@
+alert tcp any any -> any 80 (msg:"DOS flood denial of service attempt";flow:to_server; detection_filter:track by_dst, count 60, seconds 60; sid:25101; rev:1;)

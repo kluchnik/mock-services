@@ -1,0 +1,3 @@
+# IP address
+alert tcp any any <> any any (pcre:"/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.[0-9]{1,3}/"; \
+	msg:"IP address";content:"number";nocase;sid:9000003;rev:1;)

@@ -1,0 +1,2 @@
+# Signature Detection
+alert tcp any any -> any any (msg: "P2P .torrent metafile"; content:"HTTP/"; content:".torrent";  sid:1100010; rev:1;)

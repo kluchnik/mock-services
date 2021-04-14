@@ -1,0 +1,2 @@
+alert udp any any -> any 161 (msg:"SNMP Traffic";sid:9000000;)
+alert udp any any -> any 162 (msg:"SNMP Trap";sid:9000001;)

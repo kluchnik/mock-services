@@ -1,0 +1,2 @@
+preprocessor arpspoof
+preprocessor arpspoof_detect_host: 192.168.47.200 00:0C:29:0F:71:A3

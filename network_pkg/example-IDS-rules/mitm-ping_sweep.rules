@@ -1,0 +1,7 @@
+alert icmp any any -> any any (msg:"ICMP Packet found";sid:9000000;)
+alert icmp any any -> any any (itype: 0; msg: "ICMP Echo Reply";sid:9000001;)
+alert icmp any any -> any any (itype: 3; msg: "ICMP Destination Unreachable";sid:9000002;)
+alert icmp any any -> any any (itype: 4; msg: "ICMP Source Quench Message received";sid:9000003;)
+alert icmp any any -> any any (itype: 5; msg: "ICMP Redirect message";sid:9000004;)
+alert icmp any any -> any any (itype: 8; msg: "ICMP Echo Request";sid:9000005;)
+alert icmp any any -> any any (itype: 11; msg: "ICMP Time Exceeded";sid:9000006;)

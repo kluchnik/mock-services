@@ -1,0 +1,21 @@
+alert tcp any any -> any any (msg:"ET EXPLOIT Possible ETERNALBLUE MS17-010 Heap Spray"; flow:to_server,established; content:"|ff|SMB|33 00 00 00 00 18 07 c0 00 00 00 00 00 00 00 00 00 00 00 00 00|"; offset:4; depth:25; content:"|08 ff fe 00 08 41 00 09 00 00 00 10|"; within:12; fast_pattern; content:"|00 00 00 00 00 00 00 10|"; within:8; content:"|00 00 00 10|"; distance:4; within:4; pcre:"/^[a-zA-Z0-9+/]{1000,}/R"; threshold: type threshold, track by_src, count 12, seconds 1;  sid:2024217; rev:1;)
+alert tcp any any -> any any (msg:"ET EXPLOIT Possible ETERNALBLUE MS17-010 Echo Request (set)"; flow:to_server,established; content:"|00 00 00 31 ff|SMB|2b 00 00 00 00 18 07 c0|"; depth:16; fast_pattern; content:"|4a 6c 4a 6d 49 68 43 6c 42 73 72 00|"; distance:0; flowbits:set,ETPRO.ETERNALBLUE; flowbits:noalert;  sid:2024220; rev:1;)
+alert tcp any any -> any any (msg:"ET EXPLOIT Possible ETERNALBLUE MS17-010 Echo Response"; flow:from_server,established; content:"|00 00 00 31 ff|SMB|2b 00 00 00 00 98 07 c0|"; depth:16; fast_pattern; content:"|4a 6c 4a 6d 49 68 43 6c 42 73 72 00|"; distance:0; flowbits:isset,ETPRO.ETERNALBLUE;  sid:2024218; rev:1;)
+
+# Some additional pre-processor things
+preprocessor stream5_global: track_tcp yes, \
+track_udp yes, \
+track_icmp no, \
+max_tcp 262144, \
+max_udp 131072, \
+max_active_responses 2, \
+min_response_seconds 5
+preprocessor stream5_tcp: policy windows, detect_anomalies, require_3whs 180, \
+overlap_limit 10, small_segments 3 bytes 150, timeout 180, \
+ports client 21 22 23 25 42 53 70 79 109 110 111 113 119 135 136 137 139 143 \
+161 445 513 514 587 593 691 1433 1521 1741 2100 3306 6070 6665 6666 6667 6668 6669 \
+7000 8181 32770 32771 32772 32773 32774 32775 32776 32777 32778 32779, \
+ports both 80 81 82 83 84 85 86 87 88 89 90 110 311 383 443 465 563 591 593 631 636 901 989 992 993 994 995 1220 1414 1830 2301 2381 2809 3037 3057 3128 3443 3702 4343 4848 5250 6080 6988 7907 7000 7001 7144 7145 7510 7802 7777 7779 \
+7801 7900 7901 7902 7903 7904 7905 7906 7908 7909 7910 7911 7912 7913 7914 7915 7916 \
+7917 7918 7919 7920 8000 8008 8014 8028 8080 8085 8088 8090 8118 8123 8180 8222 8243 8280 8300 8500 8800 8888 8899 9000 9060 9080 9090 9091 9443 9999 10000 11371 34443 34444 41080 50000 50002 55555
+preprocessor stream5_udp: timeout 180

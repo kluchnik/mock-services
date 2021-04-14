@@ -1,0 +1,7 @@
+# Converted Format Detection
+alert tcp any any -> any 25 (content:"/9j/4AAQSkZJRgABAQEA"; msg:"Ehealth graphic";sid:10005)
+alert tcp any any -> any 25 (content:"image/gif"; msg:"GIF in email";sid:10006)
+
+# Detecting email addresses in an email
+alert tcp any any <> any 25 (pcre:"/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._%+-]/"; \
+msg:"Email in message";sid:9000000;rev:1;)

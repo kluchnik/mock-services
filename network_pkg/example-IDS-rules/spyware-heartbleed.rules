@@ -1,0 +1,1 @@
+alert tcp any any -> any 443 (msg:"Heartbeat request"; content:"|18 03 02 00|"; rawbytes;sid:100000)

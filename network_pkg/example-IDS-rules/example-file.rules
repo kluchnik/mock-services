@@ -1,0 +1,13 @@
+# Signature Detection
+alert tcp any any -> any any (content:"GIF89a"; msg:"GIF";sid:10000)
+alert tcp any any -> any any (content:"%PDF"; msg:"PDF";sid:10001)
+alert tcp any any -> any any (content:"|89 50 4E 47|"; msg:"PNG";sid:10002)
+alert tcp any any -> any any (content:"|50 4B 03 04|"; msg:"ZIP";sid:10003)
+alert tcp any any -> any any (content:"|FF D8|"; msg:"JPEG";sid:10004)
+alert tcp any any -> any any (content:"|49 44 33|"; msg:"MP3";sid:10005)
+alert tcp any any -> any any (content:"|52 49 46 46|"; msg:"AVI";sid:10006)
+alert tcp any any -> any any (content:"|46 57 53|"; msg:"Flash SWF";sid:10007)
+alert tcp any any -> any any (content:"|46 4C 56|"; msg:"Flash Video";sid:10008)
+alert tcp any any -> any any (content:"|1F 8B 08|"; msg:"GZip";sid:10009)
+alert tcp any any -> any any (content:"|52 61 72 21 1A 07 00|"; msg:"RAR";sid:10010)
+alert tcp any any -> any any (content:"|D0 CF 11 E0 A1 B1 1A E1|"; msg:"Office 2010";sid:10011)

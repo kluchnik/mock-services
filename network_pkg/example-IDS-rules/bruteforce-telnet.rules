@@ -1,0 +1,1 @@
+alert tcp any any <> any 23 (flags:S; msg:"Telnet Login";sid:9000005;rev:1;)
