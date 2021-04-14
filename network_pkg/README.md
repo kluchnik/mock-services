@@ -38,9 +38,9 @@
 |Snorpy|Web service|Snorpy a Web Base Tool to Build Snort/Suricata Rules|https://isc.sans.edu/forums/diary/Snorpy+a+Web+Base+Tool+to+Build+SnortSuricata+Rules/24522/|
 
 
-# Примеры использование утилит  
+# Пример использования утилит  
 
-#### scapy  
+### scapy  
 ```python
 from scapy.all import *
 from scapy.utils import rdpcap
@@ -53,7 +53,7 @@ for pkt in pkts:
 wrpcap(file_out, pkts, append=False)
 ```
 
-#### tcpwrite  
+### tcpwrite  
 Редактирование pcap-файла:  
 - Обновление checksums в сетевых пакетах  
 ```bash
