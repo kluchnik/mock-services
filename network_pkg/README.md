@@ -2,12 +2,13 @@
  
  В данной директории распологиается описание генерации сетевого трафика, а также примеры сетевого трафика атак и разных протоколов  
 
-# Информация о Программах и библиотеках для работы с pcap файлами  
+# Общая Информация  
+Информация о программах и библиотеках для работы с pcap файлами  
 
 |Имя|Тип|Описание|Ссылка|
 | ------------ | ------------ | ------------ | ------------ |
 |tcpreplay|утилита|Воспроизведение pcap-файла|https://tcpreplay.appneta.com/|
-|Captcp|утилита|Статистика по pcap-файлу|http://research.protocollabs.com/captcp/tut-tcp-througput-analysis-with-captcp.html|
+|captcp|утилита|Статистика по pcap-файлу|http://research.protocollabs.com/captcp/tut-tcp-througput-analysis-with-captcp.html|
 |pcapquiz.py|Python Script|Статистика по pcap-файлу|https://github.com/mirthofthewicked/pcapquiz|
 |httpdump|утилита|Захват сетевого трафика, аналог tcpdump|https://github.com/hsiafan/httpdump|
 |pcap-parsing.py|Python Script|Extracting Data from pcap files|https://github.com/Abradat/pcap-parsing|
@@ -37,10 +38,17 @@
 |ScapyTrafficGenerator|Python lib|Scapy Traffic Generator|https://pypi.org/project/ScapyTrafficGenerator/|
 |Snorpy|Web service|Snorpy a Web Base Tool to Build Snort/Suricata Rules|https://isc.sans.edu/forums/diary/Snorpy+a+Web+Base+Tool+to+Build+SnortSuricata+Rules/24522/|
 
-
 # Пример использования утилит  
 
 ### scapy  
+
+Информация методов:  
+```python
+from scapy.all import *
+
+lsc()
+```
+Работа с pcap-файлами:  
 ```python
 from scapy.all import *
 from scapy.utils import rdpcap
@@ -52,6 +60,35 @@ for pkt in pkts:
 	pkt['IP'].ttl = ''
 wrpcap(file_out, pkts, append=False)
 ```
+Генерация сетевого пакета:  
+```python
+from scapy.all import *
+
+eth = Ether()
+ip = IP(dst='192.168.1.100')
+icmp = ICMP(type=8)
+data = Raw(load='ABCDEFGHIJKLMNOPQRST')
+pkg = eth/ip/icmp/data
+pkg.show()
+```
+Генерация фрагментированного пакета:  
+```python
+from scapy.all import *
+
+eth = Ether()
+ip = IP(dst='192.168.1.100')
+icmp = ICMP(type=8)
+data = Raw(load='ABCDEFGHIJKLMNOPQRST')
+pkg = eth/ip/icmp/data
+pkg_frag = fragment(pkg, fragsize=1)
+for item in pkg_frag:
+	item.show()
+```
+Отправка сетевых пакетов:  
+sr - Send and receive packets at layer 3  
+srp - Send and receive packets at layer 2  
+send - Send packets at layer 3  
+sendp - Send packets at layer 2  
 
 ### tcpwrite  
 Редактирование pcap-файла:  
